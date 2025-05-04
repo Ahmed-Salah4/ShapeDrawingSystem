@@ -1,4 +1,6 @@
-A Java application for creating and managing shapes (Circle and Cube) with area, perimeter, and drawing instructions. It calculates the total area of shapes provided via command-line arguments.
+Shape Drawing System
+
+A Java application demonstrating Object-Oriented Programming (OOP) principles for creating and managing shapes (Circle and Cube) with area, perimeter, and drawing instructions. It calculates the total area of shapes provided via command-line arguments.
 
 Features
 
@@ -18,4 +20,4 @@ Validates inputs (positive values, minimum 2 shapes, valid shape types).
 
 
 
-Implements inheritance and interfaces (Shape, ThreeDShape, Drawable).
+Implements OOP concepts like inheritance and interfaces (Shape, ThreeDShape, Drawable).
