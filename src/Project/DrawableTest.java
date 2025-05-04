@@ -6,49 +6,78 @@ import java.util.Scanner;
 
 public class DrawableTest {
 	public static void main(String[] args) {
-		int NumberOfShapes;
-		if (args[0].contains(".")) {
-			System.out.println("Please enter an integer value.");
-			return;
-		} else
-			NumberOfShapes = Integer.parseInt(args[0]);
+		ArrayList<String> input = new ArrayList<>();
 
-		if (args.length != (2 * NumberOfShapes + 1)) {
-			System.out.println("Input size does not match the number of shapes \n");
-			return;
+		String fileName = "input.txt";
+		File file = new File(fileName);
+		try {
+
+			Scanner scanner = new Scanner(file);
+
+			while (scanner.hasNext()) {
+				input.add(scanner.next());
+			}
+
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found: " + e.getMessage());
 		}
-		if (NumberOfShapes < 2) {
-			System.out.println("Number Of shapes should be 2 or more\n");
-			return;
-		}
+		File OutFile = new File("output.txt");
 
-		ArrayList<Drawable> shapes = new ArrayList<>();
-
-		for (int i = 1; i < args.length; i += 2) {
-			String shapeType = args[i];
-			double value = Double.parseDouble(args[i + 1]);
-
-			if (value <= 0) {
-				System.out.println("Please Enter a Positive Value");
+		try {
+			ArrayList<Drawable> shapes = new ArrayList<>();
+			PrintWriter writer = new PrintWriter(new FileWriter(OutFile));
+			int NumberOfShapes;
+			
+			if (input.get(0).contains(".")) {
+				writer.println("Please enter an integer value.");
+				writer.close();
+				return;
+			} else
+				NumberOfShapes = Integer.parseInt(input.get(0));
+			
+			if (NumberOfShapes < 2) {
+				writer.println("Number of Shapes Should Be More than 2");
+				writer.close();
+				return;
+			} else if ((input.size() - 1) / 2 != NumberOfShapes) {
+				writer.println("First number Should be equal to number of shapes");
+				writer.close();
 				return;
 			}
 
-			if (shapeType.equalsIgnoreCase("Circle")) {
-				shapes.add(new Circle(value));
-			} else if (shapeType.equalsIgnoreCase("Cube")) {
-				shapes.add(new Cube(value));
-			} else {
-				System.out.println("Please Enter a Valid Shape");
-				return;
+			for (int i = 1; i < input.size(); i += 2) {
+				String shapeType = input.get(i);
+				double value = Double.parseDouble(input.get(i + 1));
+
+				if (value <= 0) {
+					writer.println("Please Enter a Positive Value");
+					writer.close();
+					return;
+				}
+
+				if (shapeType.equalsIgnoreCase("Circle")) {
+					shapes.add(new Circle(value));
+				} else if (shapeType.equalsIgnoreCase("Cube")) {
+					shapes.add(new Cube(value));
+				} else {
+					writer.println("Please Enter a Valid Shape");
+					writer.close();
+					return;
+				}
 			}
+
+			double area = 0;
+			for (int i = 0; i < shapes.size(); i++) {
+				area += ((Shape) shapes.get(i)).getArea();
+			}
+
+			writer.println("The total area of the shapes Equals: " + area);
+			writer.close();
+			
+
+		} catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
 		}
-
-		double area = 0;
-		for (int i = 0; i < shapes.size(); i++) {
-			area += ((Shape) shapes.get(i)).getArea();
-		}
-
-		System.out.println("The total area of the shapes Equals: " + area);
-
 	}
 }
